@@ -1,0 +1,29 @@
+/project-root
+├── backend/                  # Lógica del servidor (FastAPI)
+│   ├── app/
+│   │   ├── main.py           # Punto de entrada (FastAPI app)
+│   │   ├── models/           # Modelos Pydantic y de base de datos
+│   │   ├── routes/           # Endpoints (cursos, emparejamientos, auth)
+│   │   ├── services/         # Lógica de negocio (matching, builder, etc.)
+│   │   ├── utils/            # Funciones auxiliares
+│   │   └── database.py       # Configuración de PostgreSQL
+│   └── tests/                # Pruebas unitarias
+│
+├── frontend/                 # Interfaz (React)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/       # Componentes reutilizables
+│   │   ├── pages/            # Vistas como Login, Dashboard, Cursos
+│   │   ├── services/         # Conexión con API (axios)
+│   │   └── App.jsx           # Componente raíz
+│   └── package.json          # Dependencias frontend
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml            # Pipeline de CI/CD con GitHub Actions
+│
+├── .env                      # Variables de entorno
+├── docker-compose.yml       # Opcional: contenedores de backend + DB
+├── README.md                # Documentación del proyecto
+├── requirements.txt         # Dependencias Python
+└── trello-export.csv        # (Opcional) Sprint plan desde Trello

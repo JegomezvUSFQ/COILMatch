@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>COIL Coordinadora</title>
+    <style>
+      body { font-family: sans-serif; padding: 2rem; }
+      input, textarea, button { display: block; margin: 1rem 0; width: 100%; max-width: 400px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+      th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <h1>COIL - Iniciar como Coordinadora</h1>
+    <button onclick="document.getElementById('main').style.display='block'">Iniciar</button>
+
+    <div id="main" style="display:none;">
+      <h2>Agregar Curso</h2>
+      <input id="nombre" placeholder="Nombre del curso" />
+      <textarea id="descripcion" placeholder="Descripción"></textarea>
+      <textarea id="ideas" placeholder="Ideas de colaboración"></textarea>
+      <button onclick="agregarCurso()">Guardar</button>
+
+      <h2>Lista de Cursos</h2>
+      <button onclick="cargarCursos()">Actualizar</button>
+      <table id="tablaCursos"></table>
+
+      <h2>Emparejamientos</h2>
+      <button onclick="verMatches()">Ver similitudes</button>
+      <table id="tablaMatches"></table>
+    </div>
+
+    <script>
+      const api = 'http://localhost:8000';
+
+      function agregarCurso() {
+        const nombre = document.getElementById('nombre').value;
+        const descripcion = document.getElementById('descripcion').value;
+        const ideas = document.getElementById('ideas').value;
+        fetch(api + '/curso', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, descripcion, ideas })
+        }).then(() => cargarCursos());
+      }
+
+      function cargarCursos() {
+        fetch(api + '/cursos')
+          .then(r => r.json())
+          .then(data => {
+            const rows = data.map(c => `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.descripcion}</td><td>${c.ideas}</td></tr>`);
+            document.getElementById('tablaCursos').innerHTML = '<tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Ideas</th></tr>' + rows.join('');
+          });
+      }
+
+      function verMatches() {
+        fetch(api + '/emparejamientos')
+          .then(r => r.json())
+          .then(data => {
+            const rows = data.map(m => `<tr><td>${m.cursoA}</td><td>${m.cursoB}</td><td>${m.similitud}</td></tr>`);
+            document.getElementById('tablaMatches').innerHTML = '<tr><th>Curso A</th><th>Curso B</th><th>Similitud</th></tr>' + rows.join('');
+          });
+      }
+    </script>
+  </body>
+</html>
